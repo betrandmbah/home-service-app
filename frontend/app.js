@@ -1,4 +1,4 @@
-const API_BASE = "http://YOUR_EC2_PUBLIC_IP:5000";
+const API_BASE = "http://3.237.187.99:5000";
 let currentToken = localStorage.getItem("token") || "";
 let currentRole = localStorage.getItem("role") || "";
 let currentProfile = JSON.parse(localStorage.getItem("profile") || "null");
