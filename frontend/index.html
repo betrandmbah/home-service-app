@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Home Service Hub</title>
+ <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+ <header class="site-header">
+ <div class="brand">Home Service Hub</div>
+ <div class="header-actions">
+ <span id="authStatus">Not logged in</span>
+ <button id="logoutBtn" class="ghost-btn" style="display:none;">Logout</button>
+ </div>
+ </header>
+ <section class="hero">
+ <div class="hero-copy">
+ <h1>Book trusted home services with confidence.</h1>
+ <p>Providers can join, post services, and manage bookings. Customers can sign up,
+browse services, and book directly from the site.</p>
+ </div>
+ </section>
+ <main class="layout">
+ <section class="panel">
+ <h2>User access</h2>
+ <form id="userSignupForm" class="stack">
+ <input id="userFullName" placeholder="Full name" required />
+ <input id="userEmail" type="email" placeholder="Email" required />
+ <input id="userPassword" type="password" placeholder="Password" required />
+ <input id="userPhone" placeholder="Phone number" required />
+ <button type="submit">Create user account</button>
+ </form>
+ <form id="userLoginForm" class="stack">
+ <input id="userLoginEmail" type="email" placeholder="Email" required />
+ <input id="userLoginPassword" type="password" placeholder="Password" required />
+ <button type="submit">User login</button>
+ </form>
+ <div id="userMessage" class="message"></div>
+ </section>
+ <section class="panel">
+ <h2>Provider access</h2>
+ <form id="providerSignupForm" class="stack">
+ <input id="businessName" placeholder="Business name" required />
+ <input id="ownerName" placeholder="Owner name" required />
+ <input id="providerEmail" type="email" placeholder="Email" required />
+ <input id="providerPassword" type="password" placeholder="Password" required />
+ <input id="providerPhone" placeholder="Phone number" required />
+ <input id="providerCategory" placeholder="Category" required />
+ <input id="providerCity" placeholder="City" required />
+ <textarea id="providerBio" placeholder="Business bio" required></textarea>
+ <button type="submit">Create provider account</button>
+ </form>
+ <form id="providerLoginForm" class="stack">
+ <input id="providerLoginEmail" type="email" placeholder="Email" required />
+ <input id="providerLoginPassword" type="password" placeholder="Password"
+required />
+ <button type="submit">Provider login</button>
+ </form>
+ <div id="providerMessage" class="message"></div>
+ </section>
+ <section class="panel">
+ <h2>Search services</h2>
+ <form id="searchForm" class="stack">
+ <input id="searchCategory" placeholder="Category" />
+ <input id="searchCity" placeholder="City" />
+ <button type="submit">Search</button>
+ </form>
+ <div id="servicesList" class="grid-list"></div>
+ </section>
+ <section class="panel" id="providerDashboard">
+ <h2>Provider dashboard</h2>
+ <form id="serviceForm" class="stack">
+ <input id="serviceTitle" placeholder="Service title" required />
+ <input id="serviceCategory" placeholder="Category" required />
+ <textarea id="serviceDescription" placeholder="Description" required></textarea>
+ <input id="servicePrice" type="number" placeholder="Price" required />
+ <input id="serviceCity" placeholder="City" required />
+ <input id="serviceAvailability" placeholder="Availability" required />
+ <button type="submit">Post service</button>
+ </form>
+ <button id="loadProviderBookingsBtn" class="secondary-btn">Load provider
+bookings</button>
+ <div id="providerMessage2" class="message"></div>
+ </section>
+ <section class="panel" id="userDashboard">
+ <h2>User dashboard</h2>
+ <button id="loadUserBookingsBtn" class="secondary-btn">Load my bookings</button>
+ <div id="bookingsList" class="grid-list"></div>
+ </section>
+ </main>
+ <div id="bookingModal" class="modal hidden">
+ <div class="modal-card">
+ <h3>Book service</h3>
+ <form id="bookingForm" class="stack">
+ <input id="bookingDate" type="date" required />
+ <input id="bookingTime" placeholder="Time, e.g. 10:00 AM" required />
+ <input id="bookingAddress" placeholder="Service address" required />
+ <button type="submit">Confirm booking</button>
+ <button type="button" id="closeModalBtn" class="ghost-btn">Cancel</button>
+ </form>
+ </div>
+ </div>
+ <script src="app.js"></script>
+</body>
+</html>

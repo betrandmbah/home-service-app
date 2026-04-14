@@ -1,0 +1,20 @@
+*{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:lineargradient(135deg,#0f172a,#1e293b,#334155);color:#fff}
+.site-header{display:flex;justify-content:space-between;align-items:center;padding:18px
+28px;background:rgba(255,255,255,.06);position:sticky;top:0}
+.brand{font-size:1.4rem;font-weight:700;color:#67e8f9}
+.hero{padding:48px 24px 18px}.hero-copy{max-width:900px;margin:0 auto;textalign:center}.hero h1{font-size:2.4rem;margin-bottom:12px}
+.layout{max-width:1200px;margin:0 auto;padding:22px;display:grid;grid-templatecolumns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.panel{background:rgba(255,255,255,.08);padding:20px;border-radius:18px;box-shadow:0 10px
+22px rgba(0,0,0,.22)}
+.stack{display:grid;gap:10px}.grid-list{display:grid;gap:12px;margin-top:14px}
+input,textarea,button{border:none;border-radius:12px;padding:12px 14px;font-size:15px}
+textarea{min-height:110px;resize:vertical}
+button{background:#22c55e;color:#fff;font-weight:700;cursor:pointer}
+.secondary-btn{background:#0ea5e9}.ghost-btn{background:transparent;border:1px solid
+rgba(255,255,255,.4);color:#fff}
+.message{margin-top:12px;padding:12px;borderradius:12px;background:rgba(255,255,255,.08);min-height:20px}
+.card{background:rgba(255,255,255,.08);padding:14px;border-radius:14px}
+.hidden{display:none}
+.modal{position:fixed;inset:0;background:rgba(2,6,23,.72);display:flex;alignitems:center;justify-content:center;padding:20px}
+.modal-card{width:min(460px,100%);background:#0f172a;padding:22px;border-radius:18px;boxshadow:0 12px 30px rgba(0,0,0,.35)}
+@media (max-width:720px){.hero h1{font-size:1.9rem}.site-header{flexdirection:column;gap:8px}}
