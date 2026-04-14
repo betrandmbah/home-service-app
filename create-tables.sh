@@ -1,101 +1,135 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
-echo "Creating Users table..."
-aws dynamodb create-table \
-  --table-name Users \
-  --attribute-definitions \
-    AttributeName=userId,AttributeType=S \
-    AttributeName=email,AttributeType=S \
-  --key-schema \
-    AttributeName=userId,KeyType=HASH \
-  --billing-mode PAY_PER_REQUEST \
-  --global-secondary-indexes '[
-    {
-      "IndexName":"email-index",
-      "KeySchema":[{"AttributeName":"email","KeyType":"HASH"}],
-      "Projection":{"ProjectionType":"ALL"}
-    }
-  ]' || true
+REGION="us-east-1"
 
-aws dynamodb wait table-exists --table-name Users
-echo "Users ready"
+echo "Starting DynamoDB table creation..."
 
-echo "Creating Providers table..."
-aws dynamodb create-table \
-  --table-name Providers \
-  --attribute-definitions \
-    AttributeName=providerId,AttributeType=S \
-    AttributeName=email,AttributeType=S \
-  --key-schema \
-    AttributeName=providerId,KeyType=HASH \
-  --billing-mode PAY_PER_REQUEST \
-  --global-secondary-indexes '[
-    {
-      "IndexName":"email-index",
-      "KeySchema":[{"AttributeName":"email","KeyType":"HASH"}],
-      "Projection":{"ProjectionType":"ALL"}
-    }
-  ]' || true
+table_exists() {
+  aws dynamodb describe-table \
+    --table-name "$1" \
+    --region "$REGION" >/dev/null 2>&1
+}
 
-aws dynamodb wait table-exists --table-name Providers
-echo "Providers ready"
+# USERS
+if table_exists "Users"; then
+  echo "Users table already exists. Skipping..."
+else
+  echo "Creating Users table..."
+  aws dynamodb create-table \
+    --region "$REGION" \
+    --table-name Users \
+    --attribute-definitions \
+      AttributeName=userId,AttributeType=S \
+      AttributeName=email,AttributeType=S \
+    --key-schema \
+      AttributeName=userId,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST \
+    --global-secondary-indexes '[
+      {
+        "IndexName":"email-index",
+        "KeySchema":[{"AttributeName":"email","KeyType":"HASH"}],
+        "Projection":{"ProjectionType":"ALL"}
+      }
+    ]'
 
-echo "Creating Services table..."
-aws dynamodb create-table \
-  --table-name Services \
-  --attribute-definitions \
-    AttributeName=serviceId,AttributeType=S \
-    AttributeName=providerId,AttributeType=S \
-    AttributeName=category,AttributeType=S \
-    AttributeName=city,AttributeType=S \
-  --key-schema \
-    AttributeName=serviceId,KeyType=HASH \
-  --billing-mode PAY_PER_REQUEST \
-  --global-secondary-indexes '[
-    {
-      "IndexName":"providerId-index",
-      "KeySchema":[{"AttributeName":"providerId","KeyType":"HASH"}],
-      "Projection":{"ProjectionType":"ALL"}
-    },
-    {
-      "IndexName":"category-city-index",
-      "KeySchema":[
-        {"AttributeName":"category","KeyType":"HASH"},
-        {"AttributeName":"city","KeyType":"RANGE"}
-      ],
-      "Projection":{"ProjectionType":"ALL"}
-    }
-  ]' || true
+  aws dynamodb wait table-exists --table-name Users --region "$REGION"
+  echo "Users ready"
+fi
 
-aws dynamodb wait table-exists --table-name Services
-echo "Services ready"
+# PROVIDERS
+if table_exists "Providers"; then
+  echo "Providers table already exists. Skipping..."
+else
+  echo "Creating Providers table..."
+  aws dynamodb create-table \
+    --region "$REGION" \
+    --table-name Providers \
+    --attribute-definitions \
+      AttributeName=providerId,AttributeType=S \
+      AttributeName=email,AttributeType=S \
+    --key-schema \
+      AttributeName=providerId,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST \
+    --global-secondary-indexes '[
+      {
+        "IndexName":"email-index",
+        "KeySchema":[{"AttributeName":"email","KeyType":"HASH"}],
+        "Projection":{"ProjectionType":"ALL"}
+      }
+    ]'
 
-echo "Creating Bookings table..."
-aws dynamodb create-table \
-  --table-name Bookings \
-  --attribute-definitions \
-    AttributeName=bookingId,AttributeType=S \
-    AttributeName=userId,AttributeType=S \
-    AttributeName=providerId,AttributeType=S \
-  --key-schema \
-    AttributeName=bookingId,KeyType=HASH \
-  --billing-mode PAY_PER_REQUEST \
-  --global-secondary-indexes '[
-    {
-      "IndexName":"userId-index",
-      "KeySchema":[{"AttributeName":"userId","KeyType":"HASH"}],
-      "Projection":{"ProjectionType":"ALL"}
-    },
-    {
-      "IndexName":"providerId-index",
-      "KeySchema":[{"AttributeName":"providerId","KeyType":"HASH"}],
-      "Projection":{"ProjectionType":"ALL"}
-    }
-  ]' || true
+  aws dynamodb wait table-exists --table-name Providers --region "$REGION"
+  echo "Providers ready"
+fi
 
-aws dynamodb wait table-exists --table-name Bookings
-echo "Bookings ready"
+# SERVICES
+if table_exists "Services"; then
+  echo "Services table already exists. Skipping..."
+else
+  echo "Creating Services table..."
+  aws dynamodb create-table \
+    --region "$REGION" \
+    --table-name Services \
+    --attribute-definitions \
+      AttributeName=serviceId,AttributeType=S \
+      AttributeName=providerId,AttributeType=S \
+      AttributeName=category,AttributeType=S \
+      AttributeName=city,AttributeType=S \
+    --key-schema \
+      AttributeName=serviceId,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST \
+    --global-secondary-indexes '[
+      {
+        "IndexName":"providerId-index",
+        "KeySchema":[{"AttributeName":"providerId","KeyType":"HASH"}],
+        "Projection":{"ProjectionType":"ALL"}
+      },
+      {
+        "IndexName":"category-city-index",
+        "KeySchema":[
+          {"AttributeName":"category","KeyType":"HASH"},
+          {"AttributeName":"city","KeyType":"RANGE"}
+        ],
+        "Projection":{"ProjectionType":"ALL"}
+      }
+    ]'
 
-echo "All 4 tables are ready."
+  aws dynamodb wait table-exists --table-name Services --region "$REGION"
+  echo "Services ready"
+fi
+
+# BOOKINGS
+if table_exists "Bookings"; then
+  echo "Bookings table already exists. Skipping..."
+else
+  echo "Creating Bookings table..."
+  aws dynamodb create-table \
+    --region "$REGION" \
+    --table-name Bookings \
+    --attribute-definitions \
+      AttributeName=bookingId,AttributeType=S \
+      AttributeName=userId,AttributeType=S \
+      AttributeName=providerId,AttributeType=S \
+    --key-schema \
+      AttributeName=bookingId,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST \
+    --global-secondary-indexes '[
+      {
+        "IndexName":"userId-index",
+        "KeySchema":[{"AttributeName":"userId","KeyType":"HASH"}],
+        "Projection":{"ProjectionType":"ALL"}
+      },
+      {
+        "IndexName":"providerId-index",
+        "KeySchema":[{"AttributeName":"providerId","KeyType":"HASH"}],
+        "Projection":{"ProjectionType":"ALL"}
+      }
+    ]'
+
+  aws dynamodb wait table-exists --table-name Bookings --region "$REGION"
+  echo "Bookings ready"
+fi
+
+echo "✅ All tables are ready!"
