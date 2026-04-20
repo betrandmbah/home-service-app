@@ -2,7 +2,7 @@
 
 set -e
 
-cd /home/ec2-user/app
+cd /home/ec2-user/home-service-app
 
 git pull origin main
 
