@@ -19,7 +19,7 @@ pipeline {
                 sshagent(credentials: ['backend-ec2-key']) {
                     sh '''
                         ssh -o StrictHostKeyChecking=no ec2-user@$BACKEND_HOST '
-                            cd /home/ec2-user/app/backend &&
+                            cd /home/ec2-user/home-service-app/backend &&
                             chmod +x deploy.sh &&
                             ./deploy.sh
                         '
