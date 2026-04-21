@@ -1,14 +1,21 @@
 #!/bin/bash
-
 set -e
 
-cd /home/ec2-user/home-service-app
+cd /home/ec2-user/home-service-app/backend
 
-git pull origin main
+echo "Pulling latest code..."
+git pull
 
-cd backend
-
+echo "Installing dependencies..."
 npm install
 
-pm2 restart home-service-api || pm2 start ecosystem.config.js
+echo "Stopping old app..."
+pm2 stop all || true
+
+echo "Starting app..."
+pm2 start server.js --name backend
+
+echo "Saving PM2..."
 pm2 save
+
+echo "Deployment done!"
