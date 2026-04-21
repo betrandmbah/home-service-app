@@ -18,8 +18,14 @@ pipeline {
             steps {
                 sshagent(credentials: ['backend-ec2-key']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no ec2-user@$BACKEND_HOST '
-                            cd /home/ec2-user/home-service-app/backend &&
+                        ssh -vvv -o StrictHostKeyChecking=no -o ConnectionTimeout=20 ec2-user@$BACKEND_HOST '
+                            cd /home/ec2-user/home-service-app!!/backend
+                            pwd
+                            ls -lah
+                            which node
+                            whcich npm
+                            which pm2
+                            pm2 status || true 
                             chmod +x deploy.sh &&
                             ./deploy.sh
                         '
