@@ -15,25 +15,29 @@ pipeline {
         }
 
         stage('Deploy Backend') {
-            steps {
-                sshagent(credentials: ['backend-ec2-key']) {
-                    sh '''
-                            ssh -o StrictHostKeyChecking=no \
-                                -o UserKnownHostsFile=/dev/null \
-                                -o ConnectTimeout=20 \
-                                -o ServerAliveInterval=30 \
-                                -o ServerAliveCountMax=3 \ 
-                                ec2-user@$BACKEND_HOST "
-                                    set -e
-                                    cd /home/ec2-user/home-service-app!!/backend
-                                    chmod +x deploy.sh &&
-                                    ./deploy.sh
-                                    exit
-                               "
-                    '''
-                }
-            }
+    steps {
+        sshagent(credentials: ['backend-ec2-key']) {
+            sh '''
+                set -eux
+                ssh -vvv \
+                  -o StrictHostKeyChecking=no \
+                  -o UserKnownHostsFile=/dev/null \
+                  -o ConnectTimeout=20 \
+                  -o ServerAliveInterval=30 \
+                  -o ServerAliveCountMax=3 \
+                  ec2-user@$BACKEND_HOST '
+                    set -eux
+                    cd /home/ec2-user/home-service-app/backend
+                    chmod +x deploy.sh
+                    ./deploy.sh
+                    echo REMOTE_DEPLOY_DONE
+                    exit
+                  '
+                echo LOCAL_SSH_DONE
+            '''
         }
+    }
+}
 
         stage('Deploy Frontend to S3') {
             steps {
