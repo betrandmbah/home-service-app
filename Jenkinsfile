@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_DEFAULT_REGION = 'us-east-1'
         S3_BUCKET = 'project-bk-home-service'
-        BACKEND_HOST = '10.0.1.221'
+        BACKEND_HOST = '10.0.0.167'
     }
 
     stages {
